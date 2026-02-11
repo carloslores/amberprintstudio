@@ -15,11 +15,13 @@ const works = [
     title: "Crustacean Study",
     description: "High-detail sculptural relief exploring fossilized crustacean forms, suitable for vertical wall art applications.",
     image: "/images/crustaceran.png",
+    orientation: "horizontal",
   },
   {
     title: "Prehistoric Fossil Series – Dinosaur Skull",
     description: "A sculptural wall relief exploring the anatomy and presence of prehistoric fossils.",
     image: "/images/dino.png",
+    orientation: "horizontal",
   },
 ];
 
@@ -42,14 +44,14 @@ export function CollectionSection() {
               key={work.title}
               className="group relative overflow-hidden rounded-2xl bg-card border border-border"
             >
-              <div className="aspect-[4/3] overflow-hidden">
+              <div className={work.orientation === "horizontal" ? "aspect-[4/3] overflow-hidden" : "aspect-[4/4] overflow-hidden"}>
                 <Image
                   src={work.image || "/placeholder.svg"}
                   alt={work.title}
-                  width={800}
-                  height={600}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, 50vw"
+                  width={600}
+                  height={1000}
+                  className="transition-transform duration-500 group-hover:scale-105"
+
                   priority={index < 2}
                 />
               </div>
@@ -60,10 +62,15 @@ export function CollectionSection() {
                 <p className="mt-3 text-base leading-relaxed text-muted-foreground">
                   {work.description}
                 </p>
+
               </div>
             </article>
           ))}
+
         </div>
+        <p className="mt-10 text-sm leading-relaxed text-muted-foreground text-center">
+          Images shown are conceptual visualizations of the collection. Final physical pieces are currently in production and may present slight variations.
+        </p>
       </div>
     </section>
   );

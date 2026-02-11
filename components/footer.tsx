@@ -8,7 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="flex flex-col items-center gap-8 text-center">
           <Link href="/" className="  text-3xl font-semibold text-background">
-            AmberPrint
+            Amberprint Studio
           </Link>
 
           <nav className="flex flex-wrap justify-center gap-6 lg:gap-8">
@@ -28,8 +28,12 @@ export function Footer() {
 
           <div className="h-px w-full max-w-xs bg-background/20" />
 
+
+          <Link
+            href="/privacy-policy" className="text-sm text-background/70 transition-colors hover:text-background">Privacy Policy</Link>
+          <Link href="/terms-and-conditions" className="text-sm text-background/70 transition-colors hover:text-background">Terms and Conditions</Link>
           <p className="text-sm text-background/60">
-            © {currentYear} AmberPrint. All rights reserved.
+            © {currentYear} Amberprint Studio. All rights reserved.
           </p>
         </div>
       </div>

@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'AmberPrint | Sculptural Wall Art Inspired by Fossils and Amber',
+  title: 'Amberprint Studio | Sculptural Wall Art Inspired by Fossils and Amber',
   description: 'Handcrafted bas-relief pieces made with Ultracal plaster and amber resin, designed for hospitality, retail, and architectural interiors.',
   generator: 'v0.app',
   icons: {

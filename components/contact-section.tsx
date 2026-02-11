@@ -11,15 +11,56 @@ export function ContactSection() {
     company: "",
     message: "",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({ type: null, message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { name, message, email, company } = formState;
-    const destinationEmail = "contact@amberprintstudio.com";
-    const subject = encodeURIComponent(`Contact from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nCompany: ${company}\nMessage: ${message}\nEmail: ${email}`);
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: "" });
 
-    window.location.href = `mailto:${destinationEmail}?subject=${subject}&body=${body}`;
+    try {
+      const { name, message, email, company } = formState;
+
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, company, message }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus({
+          type: "success",
+          message: "Thank you! Your message has been sent successfully.",
+        });
+        // Reset form
+        setFormState({
+          name: "",
+          email: "",
+          company: "",
+          message: "",
+        });
+      } else {
+        setSubmitStatus({
+          type: "error",
+          message: data.error || "Failed to send message. Please try again.",
+        });
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: "error",
+        message: "An error occurred. Please try again later.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -36,7 +77,7 @@ export function ContactSection() {
             </h2>
             <div className="mt-8 space-y-4 text-primary-foreground/85">
               <p className="text-lg leading-relaxed">
-                AmberPrint is currently open to licensing opportunities, production
+                Amberprint Studio is currently open to licensing opportunities, production
                 partnerships, and distribution agreements.
               </p>
               <p className="leading-relaxed">
@@ -124,11 +165,25 @@ export function ContactSection() {
                   required
                 />
               </div>
+
+              {/* Status Message */}
+              {submitStatus.type && (
+                <div
+                  className={`rounded-lg p-4 ${submitStatus.type === "success"
+                    ? "bg-green-50 text-green-800 border border-green-200"
+                    : "bg-red-50 text-red-800 border border-red-200"
+                    }`}
+                >
+                  {submitStatus.message}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                disabled={isSubmitting}
+                className="w-full rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Inquiry
+                {isSubmitting ? "Sending..." : "Send Inquiry"}
               </button>
             </form>
           </div>
