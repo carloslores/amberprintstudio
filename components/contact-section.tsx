@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react"
-
 import { useState } from "react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export function ContactSection() {
+  const ref = useScrollAnimation({ staggerDelay: 0.15 });
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -40,7 +41,6 @@ export function ContactSection() {
           type: "success",
           message: "Thank you! Your message has been sent successfully.",
         });
-        // Reset form
         setFormState({
           name: "",
           email: "",
@@ -64,129 +64,192 @@ export function ContactSection() {
   };
 
   return (
-    <section id="contact" className="bg-primary py-20 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
-          {/* Text Content */}
-          <div>
-            <p className="mb-4 text-sm font-medium uppercase tracking-widest text-primary-foreground/70">
-              Partnerships & Licensing
-            </p>
-            <h2 className="  text-3xl font-semibold text-primary-foreground sm:text-4xl lg:text-5xl text-balance">
-              {"Let's Work Together"}
-            </h2>
-            <div className="mt-8 space-y-4 text-primary-foreground/85">
-              <p className="text-lg leading-relaxed">
-                Amberprint Studio is currently open to licensing opportunities, production
-                partnerships, and distribution agreements.
-              </p>
-              <p className="leading-relaxed">
-                The collection can be adapted to existing editorial formats, framed
-                wall art systems, or custom decorative applications.
-              </p>
-              <p className="leading-relaxed">
-                For collaborations, portfolio review, or production inquiries, please
-                get in touch.
-              </p>
+    <section
+      id="contact"
+      className="py-20 lg:py-32"
+      style={{ background: "var(--bg-secondary, #faf8f5)" }}
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8" ref={ref}>
+        <div className="mx-auto max-w-3xl text-center mb-16">
+          <p
+            className="mb-4 text-sm font-medium uppercase tracking-widest"
+            style={{ color: "var(--amber-800, #92400e)", letterSpacing: "0.15em" }}
+          >
+            Partnerships & Licensing
+          </p>
+          <h2
+            className="text-3xl font-semibold sm:text-4xl lg:text-5xl text-balance"
+            style={{
+              fontFamily: "var(--font-serif, 'Cormorant Garamond', serif)",
+              lineHeight: "1.1",
+              color: "var(--text-primary, #1c1917)",
+              fontWeight: 400,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {"Let's Work Together"}
+          </h2>
+          <p
+            className="mt-6 text-lg leading-relaxed mx-auto max-w-2xl"
+            style={{ color: "var(--text-secondary, #57534e)", lineHeight: 1.7 }}
+          >
+            Amberprint Studio is currently open to licensing opportunities, production
+            partnerships, and distribution agreements. The collection can be adapted to
+            existing editorial formats, framed wall art systems, or custom decorative
+            applications.
+          </p>
+        </div>
+
+        {/* Contact form with glassmorphism */}
+        <div
+          data-animate="fade-up"
+          data-delay="0"
+          className="mx-auto max-w-xl rounded-3xl p-8 lg:p-10"
+          style={{
+            background: "rgba(255, 255, 255, 0.6)",
+            border: "1px solid rgba(120, 113, 108, 0.1)",
+            backdropFilter: "blur(24px) saturate(180%)",
+            WebkitBackdropFilter: "blur(24px) saturate(180%)",
+            boxShadow: "0 25px 50px -12px rgba(28, 25, 23, 0.1)",
+          }}
+        >
+          {/* Status Message */}
+          {submitStatus.type && (
+            <div
+              className="rounded-xl p-4 mb-6"
+              style={{
+                background: submitStatus.type === "success"
+                  ? "rgba(22, 163, 74, 0.12)"
+                  : "rgba(220, 38, 38, 0.12)",
+                color: submitStatus.type === "success" ? "#166534" : "#991b1b",
+                border: `1px solid ${submitStatus.type === "success" ? "rgba(22, 163, 74, 0.25)" : "rgba(220, 38, 38, 0.25)"}`,
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                fontSize: "0.9375rem",
+                fontWeight: 500,
+                animation: "fadeInUp 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards",
+              }}
+            >
+              {submitStatus.message}
             </div>
+          )}
 
-            <div className="mt-10 flex flex-col gap-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-foreground/10">
-                  <svg className="h-5 w-5 text-primary-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-                  </svg>
-                </div>
-                <span className="text-primary-foreground">contact@amberprintstudio.com</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="rounded-2xl bg-background p-6 lg:p-10">
-            <h3 className="  text-xl font-semibold text-foreground">Send an Inquiry</h3>
-            <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-foreground">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formState.name}
-                  onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                  className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  placeholder="Your name"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formState.email}
-                  onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                  className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  placeholder="you@company.com"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-foreground">
-                  Company / Organization
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  value={formState.company}
-                  onChange={(e) => setFormState({ ...formState, company: e.target.value })}
-                  className="mt-2 w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  placeholder="Your company"
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium text-foreground">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={4}
-                  value={formState.message}
-                  onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                  className="mt-2 w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
-                  placeholder="Tell us about your project or inquiry..."
-                  required
-                />
-              </div>
-
-              {/* Status Message */}
-              {submitStatus.type && (
-                <div
-                  className={`rounded-lg p-4 ${submitStatus.type === "success"
-                    ? "bg-green-50 text-green-800 border border-green-200"
-                    : "bg-red-50 text-red-800 border border-red-200"
-                    }`}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {[
+              { id: "name", label: "Full Name *", type: "text", required: true, placeholder: "Your name" },
+              { id: "email", label: "Email Address *", type: "email", required: true, placeholder: "you@company.com" },
+              { id: "company", label: "Company / Organization", type: "text", required: false, placeholder: "Your company" },
+            ].map((field, i) => (
+              <div key={field.id} data-animate="fade-up" data-delay={i + 1}>
+                <label
+                  htmlFor={field.id}
+                  className="block text-sm font-medium mb-2"
+                  style={{
+                    color: "var(--text-primary, #1c1917)",
+                    letterSpacing: "-0.01em",
+                    transition: "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+                  }}
                 >
-                  {submitStatus.message}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+                  {field.label}
+                </label>
+                <input
+                  type={field.type}
+                  id={field.id}
+                  name={field.id}
+                  value={formState[field.id as keyof typeof formState]}
+                  onChange={(e) => setFormState({ ...formState, [field.id]: e.target.value })}
+                  className="w-full rounded-xl px-4 py-3"
+                  style={{
+                    border: "1px solid rgba(215, 211, 207, 0.4)",
+                    fontFamily: "inherit",
+                    fontSize: "0.9375rem",
+                    background: "rgba(255, 255, 255, 0.7)",
+                    transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
+                    color: "var(--text-primary, #1c1917)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    outline: "none",
+                  }}
+                  placeholder={field.placeholder}
+                  required={field.required}
+                />
+              </div>
+            ))}
+            <div data-animate="fade-up" data-delay="4">
+              <label
+                htmlFor="message"
+                className="block text-sm font-medium mb-2"
+                style={{
+                  color: "var(--text-primary, #1c1917)",
+                  letterSpacing: "-0.01em",
+                  transition: "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+                }}
               >
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                value={formState.message}
+                onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                className="w-full rounded-xl px-4 py-3 resize-y"
+                style={{
+                  border: "1px solid rgba(215, 211, 207, 0.4)",
+                  fontFamily: "inherit",
+                  fontSize: "0.9375rem",
+                  background: "rgba(255, 255, 255, 0.7)",
+                  transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
+                  color: "var(--text-primary, #1c1917)",
+                  minHeight: "140px",
+                  backdropFilter: "blur(8px)",
+                  WebkitBackdropFilter: "blur(8px)",
+                  outline: "none",
+                }}
+                placeholder="Tell us about your project or inquiry..."
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full rounded-full py-4 px-8 text-base font-medium text-white relative overflow-hidden group"
+              style={{
+                background: "var(--amber-800, #92400e)",
+                border: "none",
+                letterSpacing: "-0.01em",
+                transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
+                cursor: isSubmitting ? "not-allowed" : "pointer",
+                opacity: isSubmitting ? 0.6 : 1,
+              }}
+            >
+              <span className="relative z-10">
                 {isSubmitting ? "Sending..." : "Send Inquiry"}
-              </button>
-            </form>
-          </div>
+              </span>
+            </button>
+          </form>
+
+          {/* Input focus styles */}
+          <style>{`
+            #contact input:focus,
+            #contact textarea:focus {
+              border-color: var(--amber-400, #fbbf24) !important;
+              background: rgba(255, 255, 255, 0.95) !important;
+              box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.08), 0 8px 16px rgba(0, 0, 0, 0.04) !important;
+              transform: translateY(-3px) !important;
+            }
+            #contact input:focus + label,
+            #contact div:focus-within label {
+              color: var(--amber-800, #92400e) !important;
+              transform: translateX(6px) !important;
+            }
+            #contact button[type="submit"]:not(:disabled):hover {
+              background: var(--amber-900, #78350f) !important;
+              transform: translateY(-4px) scale(1.01) !important;
+              box-shadow: 0 20px 40px -8px rgba(146, 64, 14, 0.3) !important;
+            }
+          `}</style>
         </div>
       </div>
     </section>
