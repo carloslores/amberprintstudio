@@ -58,14 +58,15 @@ export function ProcessSection() {
               },
               {
                 num: "2",
-                title: "Amber-Toned Resin",
-                desc: "Integrated to introduce translucency, depth, and contrast, enhancing the fossil-like aesthetic.",
+                title: "Mold-Based Reproduction",
+                desc: "Scalable reproduction with adaptable formats using professional platinum-cure silicones such as Mold Star™ 30 by Smooth-On.",
               },
               {
                 num: "3",
-                title: "Mold-Based Reproduction",
-                desc: "Scalable manufacturing with size variations and adaptable formats.",
+                title: "Amber-Toned Resin",
+                desc: "Integrated to introduce translucency, depth, and contrast, enhancing the fossil-like aesthetic.",
               },
+
             ].map((step, i) => (
               <div
                 key={step.num}
