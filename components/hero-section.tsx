@@ -105,8 +105,8 @@ export function HeroSection() {
             />
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl shadow-2xl hero-image-float">
               <Image
-                src="/images/snail.png"
-                alt="Ammonite bas-relief sculptural wall art in Ultracal plaster with amber resin"
+                src="/images/hero-ammonite-amber.jpeg"
+                alt="Amber resin ammonite wall sculpture displayed in a sunlit interior"
                 fill
                 className="object-cover"
                 style={{ transition: "all 1s cubic-bezier(0.23, 1, 0.32, 1)" }}
