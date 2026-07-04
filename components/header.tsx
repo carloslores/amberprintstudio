@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 const navLinks = [
-  { href: "#collection", label: "Collection" },
-  { href: "#about", label: "About" },
-  { href: "#process", label: "Process" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#collection", label: "Collection" },
+  { href: "/#about", label: "About" },
+  { href: "/#process", label: "Process" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export function Header() {
@@ -39,6 +40,17 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileMenuOpen]);
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50"
@@ -51,8 +63,8 @@ export function Header() {
           : "1px solid rgba(120, 113, 108, 0.08)",
         boxShadow: scrolled ? "0 4px 16px rgba(28, 25, 23, 0.06)" : "0 1px 3px rgba(28, 25, 23, 0.02)",
         padding: scrolled ? "0.875rem 0" : "1.25rem 0",
-        transform: hidden ? "translateY(-110%)" : "translateY(0)",
-        opacity: hidden ? 0 : 1,
+        transform: hidden && !mobileMenuOpen ? "translateY(-110%)" : "translateY(0)",
+        opacity: hidden && !mobileMenuOpen ? 0 : 1,
         transition: "all 0.8s cubic-bezier(0.23, 1, 0.32, 1)",
       }}
     >
@@ -80,7 +92,11 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link href="#contact" className="cta-btn">
+          <Link
+            href="/#contact"
+            className="cta-btn"
+            onClick={() => track("cta_click", { location: "header", label: "Inquire" })}
+          >
             <span>Inquire</span>
           </Link>
         </div>
@@ -91,6 +107,8 @@ export function Header() {
           className="md:hidden flex h-11 w-11 items-center justify-center rounded-full text-foreground"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-navigation"
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -98,7 +116,10 @@ export function Header() {
 
       {/* Mobile Menu */}
       <div
+        id="mobile-navigation"
         className="md:hidden overflow-hidden"
+        aria-hidden={!mobileMenuOpen}
+        inert={!mobileMenuOpen}
         style={{
           maxHeight: mobileMenuOpen ? "400px" : "0",
           opacity: mobileMenuOpen ? 1 : 0,
@@ -131,9 +152,12 @@ export function Header() {
             </Link>
           ))}
           <Link
-            href="#contact"
+            href="/#contact"
             className="btn-primary mt-3 text-center"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              track("cta_click", { location: "mobile_menu", label: "Inquire" });
+            }}
             style={{
               transitionDelay: mobileMenuOpen ? "0.2s" : "0s",
               transform: mobileMenuOpen ? "translateY(0)" : "translateY(10px)",

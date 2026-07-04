@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { track } from "@vercel/analytics";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -97,7 +98,11 @@ export function Footer() {
             >
               Creating distinctive sculptural wall art inspired by the beauty of fossilized nature and geological time.
             </p>
-            <a href="mailto:contact@amberprintstudio.com" className="footer-email">
+            <a
+              href="mailto:contact@amberprintstudio.com"
+              className="footer-email"
+              onClick={() => track("email_click", { location: "footer" })}
+            >
               contact@amberprintstudio.com
             </a>
           </div>
@@ -117,7 +122,7 @@ export function Footer() {
             <ul className="space-y-3">
               {["Collection", "About", "Process", "Contact"].map((item, i) => (
                 <li key={item} data-animate="fade-left" data-delay={i + 2}>
-                  <Link href={`#${item.toLowerCase()}`} className="footer-link">
+                  <Link href={`/#${item.toLowerCase()}`} className="footer-link">
                     {item}
                   </Link>
                 </li>
@@ -206,6 +211,7 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
+                onClick={() => track("social_click", { network: social.label })}
                 className="social-icon-link"
                 style={{
                   display: "flex",
