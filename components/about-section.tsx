@@ -42,7 +42,7 @@ export function AboutSection() {
                 </svg>
               ),
               title: "Fossil-Inspired Design",
-              desc: "Each piece is inspired by fossilized marine life and the visual language of geological time, capturing nature\u2019s artistry in sculptural form.",
+              desc: "Each piece draws inspiration from fossilized life forms and geological formations, translating nature’s preserved structures into dimensional sculptural panels.",
             },
             {
               icon: (

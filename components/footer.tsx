@@ -152,15 +152,89 @@ export function Footer() {
           </div>
         </div>
 
+
+
         {/* Bottom */}
         <div
-          className="pt-8 text-center text-sm"
+          className="pt-8 text-center text-sm flex flex-col md:flex-row justify-around gap-6"
           style={{
             borderTop: "1px solid rgba(255, 255, 255, 0.08)",
             color: "var(--stone-500, #78716c)",
           }}
         >
-          <p>© {currentYear} Amberprint Studio. All rights reserved.</p>
+          <span>© {currentYear} Amberprint Studio. All rights reserved.</span>
+          {/* Social Media Links */}
+          <div
+            className="flex justify-center gap-5 mb-10"
+          >
+            {[
+              {
+                label: "Facebook",
+                href: "https://www.facebook.com/amberprintstudio",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Instagram",
+                href: "https://www.instagram.com/amberprintstudio",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                ),
+              },
+              {
+                label: "LinkedIn",
+                href: "https://www.linkedin.com/company/amberprint-studio/",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+                    <rect x="2" y="9" width="4" height="12" />
+                    <circle cx="4" cy="4" r="2" />
+                  </svg>
+                ),
+              },
+            ].map((social) => (
+              <a
+                key={social.label}
+                href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="social-icon-link"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  border: "1.5px solid var(--stone-600, #57534e)",
+                  color: "var(--stone-400, #a8a29e)",
+                  transition: "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "white";
+                  e.currentTarget.style.borderColor = "var(--amber-400, #fbbf24)";
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(251, 191, 36, 0.15)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "var(--stone-400, #a8a29e)";
+                  e.currentTarget.style.borderColor = "var(--stone-600, #57534e)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                {social.icon}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
