@@ -3,6 +3,7 @@
 import React from "react"
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { track } from "@vercel/analytics";
 
 export function ContactSection() {
   const ref = useScrollAnimation({ staggerDelay: 0.15 });
@@ -10,7 +11,9 @@ export function ContactSection() {
     name: "",
     email: "",
     company: "",
+    projectType: "Other",
     message: "",
+    website: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
@@ -22,16 +25,15 @@ export function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus({ type: null, message: "" });
+    track("inquiry_submit_started", { project_type: formState.projectType });
 
     try {
-      const { name, message, email, company } = formState;
-
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, company, message }),
+        body: JSON.stringify(formState),
       });
 
       const data = await response.json();
@@ -45,19 +47,24 @@ export function ContactSection() {
           name: "",
           email: "",
           company: "",
+          projectType: "Other",
           message: "",
+          website: "",
         });
+        track("inquiry_submit_success", { project_type: formState.projectType });
       } else {
         setSubmitStatus({
           type: "error",
           message: data.error || "Failed to send message. Please try again.",
         });
+        track("inquiry_submit_error", { status: response.status });
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus({
         type: "error",
         message: "An error occurred. Please try again later.",
       });
+      track("inquiry_submit_error", { status: "network" });
     } finally {
       setIsSubmitting(false);
     }
@@ -100,6 +107,39 @@ export function ContactSection() {
           </p>
         </div>
 
+        <div className="mx-auto mb-14 grid max-w-5xl gap-4 md:grid-cols-3">
+          {[
+            {
+              step: "01",
+              title: "Share the brief",
+              description: "Tell us about the space, application, quantity, and target installation date.",
+            },
+            {
+              step: "02",
+              title: "Adapt the system",
+              description: "We align the format, finish, and modular composition with your project needs.",
+            },
+            {
+              step: "03",
+              title: "Plan production",
+              description: "We confirm samples, production scope, lead time, and delivery requirements.",
+            },
+          ].map((item, index) => (
+            <article
+              key={item.step}
+              data-animate="fade-up"
+              data-delay={index}
+              className="rounded-2xl border border-stone-200 bg-white/60 p-6 text-left"
+            >
+              <span className="text-xs font-semibold tracking-[0.2em] text-amber-800">
+                {item.step}
+              </span>
+              <h3 className="mt-3 text-xl font-medium text-stone-900">{item.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-stone-600">{item.description}</p>
+            </article>
+          ))}
+        </div>
+
         {/* Contact form with glassmorphism */}
         <div
           data-animate="fade-up"
@@ -116,6 +156,8 @@ export function ContactSection() {
           {/* Status Message */}
           {submitStatus.type && (
             <div
+              role={submitStatus.type === "error" ? "alert" : "status"}
+              aria-live="polite"
               className="rounded-xl p-4 mb-6"
               style={{
                 background: submitStatus.type === "success"
@@ -134,11 +176,11 @@ export function ContactSection() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6" aria-busy={isSubmitting}>
             {[
-              { id: "name", label: "Full Name *", type: "text", required: true, placeholder: "Your name" },
-              { id: "email", label: "Email Address *", type: "email", required: true, placeholder: "you@company.com" },
-              { id: "company", label: "Company / Organization", type: "text", required: false, placeholder: "Your company" },
+              { id: "name", label: "Full Name *", type: "text", required: true, placeholder: "Your name", autoComplete: "name", maxLength: 80 },
+              { id: "email", label: "Email Address *", type: "email", required: true, placeholder: "you@company.com", autoComplete: "email", maxLength: 254 },
+              { id: "company", label: "Company / Organization", type: "text", required: false, placeholder: "Your company", autoComplete: "organization", maxLength: 120 },
             ].map((field, i) => (
               <div key={field.id} data-animate="fade-up" data-delay={i + 1}>
                 <label
@@ -172,10 +214,44 @@ export function ContactSection() {
                   }}
                   placeholder={field.placeholder}
                   required={field.required}
+                  autoComplete={field.autoComplete}
+                  maxLength={field.maxLength}
                 />
               </div>
             ))}
             <div data-animate="fade-up" data-delay="4">
+              <label
+                htmlFor="projectType"
+                className="block text-sm font-medium mb-2"
+                style={{ color: "var(--text-primary, #1c1917)" }}
+              >
+                Project Type *
+              </label>
+              <select
+                id="projectType"
+                name="projectType"
+                value={formState.projectType}
+                onChange={(event) => setFormState({ ...formState, projectType: event.target.value })}
+                className="w-full rounded-xl px-4 py-3"
+                style={{
+                  border: "1px solid rgba(215, 211, 207, 0.4)",
+                  background: "rgba(255, 255, 255, 0.7)",
+                  color: "var(--text-primary, #1c1917)",
+                }}
+                required
+              >
+                {[
+                  "Hospitality",
+                  "Retail",
+                  "Residential",
+                  "Licensing",
+                  "Other",
+                ].map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+            </div>
+            <div data-animate="fade-up" data-delay="5">
               <label
                 htmlFor="message"
                 className="block text-sm font-medium mb-2"
@@ -208,6 +284,22 @@ export function ContactSection() {
                 }}
                 placeholder="Tell us about your project or inquiry..."
                 required
+                minLength={20}
+                maxLength={3000}
+                autoComplete="off"
+              />
+            </div>
+
+            <div className="absolute left-[-9999px]" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                value={formState.website}
+                onChange={(event) => setFormState({ ...formState, website: event.target.value })}
+                tabIndex={-1}
+                autoComplete="off"
               />
             </div>
 
@@ -228,6 +320,9 @@ export function ContactSection() {
                 {isSubmitting ? "Sending..." : "Send Inquiry"}
               </span>
             </button>
+            <p className="text-center text-xs leading-5 text-stone-500">
+              Include approximate quantity and timing when available. We usually reply by email with the next steps for your project.
+            </p>
           </form>
 
           {/* Input focus styles */}

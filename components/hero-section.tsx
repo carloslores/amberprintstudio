@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 
 export function HeroSection() {
   return (
@@ -72,10 +75,18 @@ export function HeroSection() {
               large-scale production and licensing.
             </p>
             <div className="hero-animate-buttons mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-              <Link href="#collection" className="btn-primary">
+              <Link
+                href="#collection"
+                className="btn-primary"
+                onClick={() => track("cta_click", { location: "hero", label: "View Collection" })}
+              >
                 <span>View Collection</span>
               </Link>
-              <Link href="#contact" className="btn-secondary">
+              <Link
+                href="#contact"
+                className="btn-secondary"
+                onClick={() => track("cta_click", { location: "hero", label: "Partner With Us" })}
+              >
                 <span>Partner With Us</span>
               </Link>
             </div>
@@ -101,6 +112,7 @@ export function HeroSection() {
                 style={{ transition: "all 1s cubic-bezier(0.23, 1, 0.32, 1)" }}
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
+                quality={82}
               />
             </div>
           </div>

@@ -19,7 +19,7 @@ const PrivacyPolicy = () => {
                     {/* Introduction */}
                     <div className="mb-12 text-center">
                         <p className="text-lg leading-relaxed text-foreground">
-                            Amberprint Studio ("we," "our," or "us") operates the website{" "}
+                            Amberprint Studio (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) operates the website{" "}
                             <span className="font-medium">amberprintstudio.com</span>. This Privacy Policy
                             explains how we collect, use, and protect your information when you visit our
                             website or contact us.
@@ -188,7 +188,7 @@ const PrivacyPolicy = () => {
                     {/* Section 8 */}
                     <div className="mb-12">
                         <h2 className="mb-6 text-2xl font-semibold text-primary lg:text-3xl">
-                            8. Children's Privacy
+                            8. Children&apos;s Privacy
                         </h2>
                         <p className="leading-relaxed text-foreground">
                             Our website is not directed to individuals under the age of 13. We do not knowingly

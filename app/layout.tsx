@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://amberprintstudio.com";
@@ -45,8 +46,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        // Debes crear esta imagen (1200x630) en /public/og/og.jpg
-        url: "/og/og.jpg",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Amberprint Studio — luxury fossil-inspired sculptural wall panels",
@@ -59,19 +59,14 @@ export const metadata: Metadata = {
     title: "Amberprint Studio",
     description:
       "Luxury fossil-inspired sculptural wall panels handcrafted in Miami, Florida.",
-    images: ["/og/og.jpg"],
+    images: ["/opengraph-image"],
   },
 
-
-  // Útil para “branding” cuando compartes el link
   appleWebApp: {
     capable: true,
     title: "Amberprint Studio",
     statusBarStyle: "default",
   },
-
-  // Si tu sitio es solo en inglés (recomendado), deja:
-  // Si tienes ES/EN, lo ideal es i18n y hreflang (lo montamos luego).
 };
 
 export const viewport: Viewport = {
@@ -86,12 +81,11 @@ function jsonLdOrganization() {
     "@type": "Organization",
     name: "Amberprint Studio",
     url: siteUrl,
-    logo: `${siteUrl}/brand/logo.png`, // crea /public/brand/logo.png
+    logo: `${siteUrl}/icon.png`,
     sameAs: [
-      // pon aquí tus perfiles reales
       "https://www.instagram.com/amberprintstudio",
       "https://www.facebook.com/amberprintstudio",
-      "https://www.linkedin.com/company/amberprint-studio"
+      "https://www.linkedin.com/company/amberprint-studio",
     ],
     address: {
       "@type": "PostalAddress",
@@ -108,11 +102,6 @@ function jsonLdWebSite() {
     "@type": "WebSite",
     name: "Amberprint Studio",
     url: siteUrl,
-    potentialAction: {
-      "@type": "SearchAction",
-      target: `${siteUrl}/search?q={search_term_string}`,
-      "query-input": "required name=search_term_string",
-    },
   };
 }
 
@@ -122,14 +111,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        {/* JSON-LD: Organization */}
         <Script
           id="ld-org"
           type="application/ld+json"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization()) }}
         />
-        {/* JSON-LD: WebSite */}
         <Script
           id="ld-website"
           type="application/ld+json"
@@ -138,6 +125,7 @@ export default function RootLayout({
         />
 
         {children}
+        <Analytics />
       </body>
     </html>
   );

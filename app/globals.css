@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -175,6 +174,16 @@
 
 body {
   font-family: 'HeadingNow';
+  overflow-x: hidden;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:focus-visible {
+  outline: 3px solid var(--amber-400);
+  outline-offset: 3px;
 }
 
 @layer base {
@@ -378,6 +387,31 @@ body {
 ::selection {
   background: var(--amber-200);
   color: var(--amber-950);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-animate],
+  .hero-animate-label,
+  .hero-animate-title,
+  .hero-animate-desc,
+  .hero-animate-buttons,
+  .hero-animate-image {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* ============================================

@@ -145,7 +145,7 @@ const TermsAndConditions = () => {
                             <li>Indirect or incidental damages</li>
                         </ul>
                         <p className="mt-6 leading-relaxed text-foreground">
-                            Use of the website is at the user's own risk.
+                            Use of the website is at the user&apos;s own risk.
                         </p>
                     </div>
 
