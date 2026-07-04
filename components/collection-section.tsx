@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { track } from "@vercel/analytics";
 
@@ -36,6 +37,7 @@ const works = [
 
 export function CollectionSection() {
   const ref = useScrollAnimation({ staggerDelay: 0.2 });
+  const [openWork, setOpenWork] = useState<string | null>(null);
 
   return (
     <section
@@ -57,9 +59,16 @@ export function CollectionSection() {
           position: relative;
           overflow: hidden;
         }
-        .coll-card:hover {
-          transform: translateY(-16px) scale(1.02);
-          box-shadow: 0 35px 70px -18px rgba(28, 25, 23, 0.18);
+        .coll-media-trigger {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          border: 0;
+          padding: 0;
+          display: block;
+          background: transparent;
+          cursor: pointer;
         }
         .coll-card .coll-img {
           width: 100%;
@@ -68,19 +77,33 @@ export function CollectionSection() {
           transition: all 1.4s cubic-bezier(0.23, 1, 0.32, 1);
           filter: saturate(0.9) contrast(1.02);
         }
-        .coll-card:hover .coll-img {
-          transform: scale(1.12);
+        .coll-card.is-open .coll-img {
+          transform: scale(1.05);
           filter: saturate(1.05) contrast(1.05);
         }
         .coll-overlay {
-          position: relative;
-          background: var(--stone-900, #1c1917);
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-end;
+          background: linear-gradient(to top,
+            rgba(28, 25, 23, 0.96) 0%,
+            rgba(28, 25, 23, 0.75) 52%,
+            rgba(28, 25, 23, 0.2) 100%);
           padding: 1.5rem;
-          transform: translateY(0);
-          opacity: 1;
+          transform: translateY(100%);
+          opacity: 0;
+          pointer-events: none;
           transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
           backdrop-filter: blur(12px) saturate(180%);
           -webkit-backdrop-filter: blur(12px) saturate(180%);
+        }
+        .coll-card.is-open .coll-overlay {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
         }
         .coll-overlay h3 {
           font-family: var(--font-serif, 'Cormorant Garamond', serif);
@@ -89,8 +112,8 @@ export function CollectionSection() {
           margin-bottom: 0.5rem;
           font-weight: 400;
           letter-spacing: -0.02em;
-          transform: translateY(0);
-          opacity: 1;
+          transform: translateY(20px);
+          opacity: 0;
           transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.1s;
         }
         .coll-overlay p {
@@ -98,9 +121,14 @@ export function CollectionSection() {
           font-size: 0.9375rem;
           line-height: 1.6;
           max-width: 90%;
+          transform: translateY(20px);
+          opacity: 0;
+          transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+        }
+        .coll-card.is-open .coll-overlay h3,
+        .coll-card.is-open .coll-overlay p {
           transform: translateY(0);
           opacity: 1;
-          transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
         }
         .coll-details {
           color: rgba(255, 255, 255, 0.8);
@@ -117,9 +145,52 @@ export function CollectionSection() {
           text-decoration: underline;
           text-underline-offset: 4px;
         }
+        .coll-close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          width: 2.75rem;
+          height: 2.75rem;
+          border: 1px solid rgba(255, 255, 255, 0.55);
+          border-radius: 999px;
+          display: grid;
+          place-items: center;
+          color: white;
+          background: rgba(28, 25, 23, 0.35);
+          font-size: 1.5rem;
+          line-height: 1;
+          cursor: pointer;
+        }
+        .coll-tap-hint {
+          position: absolute;
+          z-index: 1;
+          right: 1rem;
+          bottom: 1rem;
+          padding: 0.5rem 0.75rem;
+          border-radius: 999px;
+          color: white;
+          background: rgba(28, 25, 23, 0.68);
+          font-size: 0.75rem;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+        }
         @media (hover: hover) and (pointer: fine) and (min-width: 641px) {
+          .coll-card:hover {
+            transform: translateY(-16px) scale(1.02);
+            box-shadow: 0 35px 70px -18px rgba(28, 25, 23, 0.18);
+          }
+          .coll-card:hover .coll-img {
+            transform: scale(1.12);
+            filter: saturate(1.05) contrast(1.05);
+          }
+          .coll-tap-hint,
+          .coll-close {
+            display: none;
+          }
           .coll-overlay {
-            position: absolute;
+            top: auto;
             bottom: 0;
             left: 0;
             right: 0;
@@ -140,12 +211,16 @@ export function CollectionSection() {
           }
           .coll-card:hover .coll-overlay,
           .coll-card:focus-within .coll-overlay,
+          .coll-card.is-open .coll-overlay,
           .coll-card:hover .coll-overlay h3,
           .coll-card:focus-within .coll-overlay h3,
+          .coll-card.is-open .coll-overlay h3,
           .coll-card:hover .coll-overlay p,
-          .coll-card:focus-within .coll-overlay p {
+          .coll-card:focus-within .coll-overlay p,
+          .coll-card.is-open .coll-overlay p {
             transform: translateY(0);
             opacity: 1;
+            pointer-events: auto;
           }
         }
       `}</style>
@@ -178,30 +253,61 @@ export function CollectionSection() {
               key={work.title}
               data-animate="fade-up-scale"
               data-delay={index}
-              className="coll-card"
+              className={`coll-card ${openWork === work.title ? "is-open" : ""}`}
+              onKeyDown={(event) => {
+                if (event.key === "Escape") setOpenWork(null);
+              }}
             >
-              <div className={`coll-media ${work.orientation === "horizontal" ? "aspect-[4/3]" : "aspect-square"}`}>
-                <Image
-                  src={work.image || "/placeholder.svg"}
-                  alt={work.title}
-                  fill
-                  className="coll-img"
-                  sizes="(max-width: 640px) 100vw, 50vw"
-                />
-              </div>
-              <div className="coll-overlay">
-                <h3>{work.title}</h3>
-                <p>{work.description}</p>
-                <ul className="coll-details">
-                  {work.details.map((detail) => <li key={detail}>• {detail}</li>)}
-                </ul>
-                <Link
-                  href="#contact"
-                  className="coll-inquire"
-                  onClick={() => track("collection_inquiry_click", { piece: work.title })}
+              <div className={`coll-media ${work.orientation === "horizontal" ? "aspect-square sm:aspect-[4/3]" : "aspect-square"}`}>
+                <button
+                  type="button"
+                  className="coll-media-trigger"
+                  aria-expanded={openWork === work.title}
+                  aria-controls={`collection-details-${index}`}
+                  aria-label={`Show details for ${work.title}`}
+                  onClick={() => setOpenWork((current) => current === work.title ? null : work.title)}
                 >
-                  Discuss this piece
-                </Link>
+                  <Image
+                    src={work.image || "/placeholder.svg"}
+                    alt={work.title}
+                    fill
+                    className="coll-img"
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                  />
+                  <span className="coll-tap-hint">Tap for details</span>
+                </button>
+                <div
+                  id={`collection-details-${index}`}
+                  className="coll-overlay"
+                  aria-hidden={openWork !== work.title}
+                  onClick={() => setOpenWork(null)}
+                >
+                  <button
+                    type="button"
+                    className="coll-close"
+                    aria-label={`Close details for ${work.title}`}
+                    tabIndex={openWork === work.title ? 0 : -1}
+                    onClick={() => setOpenWork(null)}
+                  >
+                    ×
+                  </button>
+                  <h3>{work.title}</h3>
+                  <p>{work.description}</p>
+                  <ul className="coll-details">
+                    {work.details.map((detail) => <li key={detail}>• {detail}</li>)}
+                  </ul>
+                  <Link
+                    href="#contact"
+                    className="coll-inquire"
+                    tabIndex={openWork === work.title ? 0 : -1}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      track("collection_inquiry_click", { piece: work.title });
+                    }}
+                  >
+                    Discuss this piece
+                  </Link>
+                </div>
               </div>
             </article>
           ))}
