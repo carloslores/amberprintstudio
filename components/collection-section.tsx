@@ -77,7 +77,7 @@ export function CollectionSection() {
           transition: all 1.4s cubic-bezier(0.23, 1, 0.32, 1);
           filter: saturate(0.9) contrast(1.02);
         }
-        .coll-card.is-open .coll-img {
+        .coll-card[data-open="true"] .coll-img {
           transform: scale(1.05);
           filter: saturate(1.05) contrast(1.05);
         }
@@ -100,7 +100,7 @@ export function CollectionSection() {
           backdrop-filter: blur(12px) saturate(180%);
           -webkit-backdrop-filter: blur(12px) saturate(180%);
         }
-        .coll-card.is-open .coll-overlay {
+        .coll-card[data-open="true"] .coll-overlay {
           transform: translateY(0);
           opacity: 1;
           pointer-events: auto;
@@ -125,8 +125,8 @@ export function CollectionSection() {
           opacity: 0;
           transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
         }
-        .coll-card.is-open .coll-overlay h3,
-        .coll-card.is-open .coll-overlay p {
+        .coll-card[data-open="true"] .coll-overlay h3,
+        .coll-card[data-open="true"] .coll-overlay p {
           transform: translateY(0);
           opacity: 1;
         }
@@ -211,13 +211,13 @@ export function CollectionSection() {
           }
           .coll-card:hover .coll-overlay,
           .coll-card:focus-within .coll-overlay,
-          .coll-card.is-open .coll-overlay,
+          .coll-card[data-open="true"] .coll-overlay,
           .coll-card:hover .coll-overlay h3,
           .coll-card:focus-within .coll-overlay h3,
-          .coll-card.is-open .coll-overlay h3,
+          .coll-card[data-open="true"] .coll-overlay h3,
           .coll-card:hover .coll-overlay p,
           .coll-card:focus-within .coll-overlay p,
-          .coll-card.is-open .coll-overlay p {
+          .coll-card[data-open="true"] .coll-overlay p {
             transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
@@ -253,7 +253,8 @@ export function CollectionSection() {
               key={work.title}
               data-animate="fade-up-scale"
               data-delay={index}
-              className={`coll-card ${openWork === work.title ? "is-open" : ""}`}
+              className="coll-card"
+              data-open={openWork === work.title}
               onKeyDown={(event) => {
                 if (event.key === "Escape") setOpenWork(null);
               }}
