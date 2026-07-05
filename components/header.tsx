@@ -153,7 +153,7 @@ export function Header() {
           ))}
           <Link
             href="/#contact"
-            className="cta-btn cta-btn-mobile mt-3 text-center"
+            className="btn-primary mt-3 text-center"
             onClick={() => {
               setMobileMenuOpen(false);
               track("cta_click", { location: "mobile_menu", label: "Inquire" });
