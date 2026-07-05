@@ -306,18 +306,16 @@ export function ContactSection() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-full py-4 px-8 text-base font-medium text-white relative overflow-hidden group"
+              className="contact-submit w-full py-4 px-8 text-base font-medium text-white relative overflow-hidden group"
               style={{
-                background: "var(--amber-800, #92400e)",
-                border: "none",
                 letterSpacing: "-0.01em",
-                transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
                 cursor: isSubmitting ? "not-allowed" : "pointer",
                 opacity: isSubmitting ? 0.6 : 1,
               }}
             >
-              <span className="relative z-10">
+              <span className="relative z-10 inline-flex items-center gap-3">
                 {isSubmitting ? "Sending..." : "Send Inquiry"}
+                {!isSubmitting && <span className="contact-submit-arrow" aria-hidden="true">→</span>}
               </span>
             </button>
             <p className="text-center text-xs leading-5 text-stone-500">
@@ -340,9 +338,40 @@ export function ContactSection() {
               transform: translateX(6px) !important;
             }
             #contact button[type="submit"]:not(:disabled):hover {
-              background: var(--amber-900, #78350f) !important;
-              transform: translateY(-4px) scale(1.01) !important;
-              box-shadow: 0 20px 40px -8px rgba(146, 64, 14, 0.3) !important;
+              background: linear-gradient(135deg, #93400f 0%, #6f2f0c 100%) !important;
+              border-color: rgba(120, 53, 15, 0.8) !important;
+              transform: translateY(-3px) !important;
+              box-shadow: 0 20px 38px -20px rgba(120, 53, 15, 0.75) !important;
+            }
+            .contact-submit {
+              background: linear-gradient(135deg, #292524 0%, #171412 100%);
+              border: 1px solid rgba(146, 64, 14, 0.28);
+              border-radius: 0.875rem;
+              box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                0 14px 32px -24px rgba(28, 25, 23, 0.9);
+              transition: all 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+            .contact-submit-arrow {
+              display: inline-block;
+              transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+            .contact-submit:not(:disabled):hover .contact-submit-arrow {
+              transform: translateX(4px);
+            }
+            .contact-submit:focus-visible {
+              outline: 2px solid rgba(146, 64, 14, 0.5);
+              outline-offset: 3px;
+            }
+            @media (prefers-reduced-motion: reduce) {
+              .contact-submit,
+              .contact-submit-arrow {
+                transition: none;
+              }
+              #contact button[type="submit"]:not(:disabled):hover,
+              .contact-submit:not(:disabled):hover .contact-submit-arrow {
+                transform: none !important;
+              }
             }
           `}</style>
         </div>

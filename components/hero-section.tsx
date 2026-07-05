@@ -80,7 +80,10 @@ export function HeroSection() {
                 className="btn-primary"
                 onClick={() => track("cta_click", { location: "hero", label: "View Collection" })}
               >
-                <span>View Collection</span>
+                <span>
+                  View Collection
+                  <span className="cta-arrow" aria-hidden="true">→</span>
+                </span>
               </Link>
               <Link
                 href="#contact"
