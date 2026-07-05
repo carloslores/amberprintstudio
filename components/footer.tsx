@@ -65,6 +65,45 @@ export function Footer() {
         .footer-email:hover::after {
           width: 100%;
         }
+        .social-icon-link {
+          align-items: center;
+          background: transparent;
+          border: 0;
+          border-radius: 9999px;
+          color: var(--stone-300, #d6d3d1);
+          display: inline-flex;
+          height: 44px;
+          justify-content: center;
+          opacity: 0.58;
+          transition:
+            color 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+            opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+            transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+          width: 44px;
+        }
+        .social-icon-link svg {
+          height: 19px;
+          width: 19px;
+        }
+        .social-icon-link:hover,
+        .social-icon-link:focus-visible {
+          color: var(--amber-400, #fbbf24);
+          opacity: 1;
+          transform: translateY(-2px);
+        }
+        .social-icon-link:focus-visible {
+          outline: 1px solid color-mix(in srgb, var(--amber-400, #fbbf24) 70%, transparent);
+          outline-offset: -5px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .social-icon-link {
+            transition: none;
+          }
+          .social-icon-link:hover,
+          .social-icon-link:focus-visible {
+            transform: none;
+          }
+        }
       `}</style>
 
       {/* Top gradient line */}
@@ -169,19 +208,8 @@ export function Footer() {
         >
           <span>© {currentYear} Amberprint Studio. All rights reserved.</span>
           {/* Social Media Links */}
-          <div
-            className="flex justify-center gap-5 mb-10"
-          >
+          <div className="flex justify-center gap-2">
             {[
-              {
-                label: "Facebook",
-                href: "https://www.facebook.com/amberprintstudio",
-                icon: (
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                  </svg>
-                ),
-              },
               {
                 label: "Instagram",
                 href: "https://www.instagram.com/amberprintstudio",
@@ -190,6 +218,15 @@ export function Footer() {
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                  </svg>
+                ),
+              },
+              {
+                label: "Facebook",
+                href: "https://www.facebook.com/amberprintstudio",
+                icon: (
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                   </svg>
                 ),
               },
@@ -213,29 +250,6 @@ export function Footer() {
                 aria-label={social.label}
                 onClick={() => track("social_click", { network: social.label })}
                 className="social-icon-link"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "44px",
-                  height: "44px",
-                  borderRadius: "50%",
-                  border: "1.5px solid var(--stone-600, #57534e)",
-                  color: "var(--stone-400, #a8a29e)",
-                  transition: "all 0.5s cubic-bezier(0.23, 1, 0.32, 1)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = "white";
-                  e.currentTarget.style.borderColor = "var(--amber-400, #fbbf24)";
-                  e.currentTarget.style.transform = "translateY(-3px)";
-                  e.currentTarget.style.boxShadow = "0 4px 20px rgba(251, 191, 36, 0.15)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = "var(--stone-400, #a8a29e)";
-                  e.currentTarget.style.borderColor = "var(--stone-600, #57534e)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "none";
-                }}
               >
                 {social.icon}
               </a>
