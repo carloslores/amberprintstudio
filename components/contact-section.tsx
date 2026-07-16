@@ -306,10 +306,8 @@ export function ContactSection() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-full py-4 px-8 text-base font-medium text-white relative overflow-hidden group"
+              className="glass-amber-submit w-full rounded-full py-4 px-8 text-base font-medium text-white relative overflow-hidden group"
               style={{
-                background: "var(--amber-800, #92400e)",
-                border: "none",
                 letterSpacing: "-0.01em",
                 transition: "all 0.6s cubic-bezier(0.23, 1, 0.32, 1)",
                 cursor: isSubmitting ? "not-allowed" : "pointer",
@@ -340,9 +338,17 @@ export function ContactSection() {
               transform: translateX(6px) !important;
             }
             #contact button[type="submit"]:not(:disabled):hover {
-              background: var(--amber-900, #78350f) !important;
+              background: linear-gradient(
+                135deg,
+                rgba(146, 64, 14, 0.82) 0%,
+                rgba(180, 83, 9, 0.64) 58%,
+                rgba(251, 191, 36, 0.42) 100%
+              ) !important;
               transform: translateY(-4px) scale(1.01) !important;
-              box-shadow: 0 20px 40px -8px rgba(146, 64, 14, 0.3) !important;
+              box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.42),
+                inset 0 -18px 34px rgba(69, 26, 3, 0.2),
+                0 20px 40px -8px rgba(146, 64, 14, 0.3) !important;
             }
           `}</style>
         </div>
