@@ -159,10 +159,15 @@ export function Footer() {
               Navigation
             </h4>
             <ul className="space-y-3">
-              {["Collection", "About", "Process", "Contact"].map((item, i) => (
-                <li key={item} data-animate="fade-left" data-delay={i + 2}>
-                  <Link href={`/#${item.toLowerCase()}`} className="footer-link">
-                    {item}
+              {[
+                { label: "Collection", href: "/collection" },
+                { label: "About", href: "/#about" },
+                { label: "Process", href: "/#process" },
+                { label: "Contact", href: "/#contact" },
+              ].map((item, i) => (
+                <li key={item.label} data-animate="fade-left" data-delay={i + 2}>
+                  <Link href={item.href} className="footer-link">
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -203,7 +208,7 @@ export function Footer() {
           className="pt-8 text-center text-sm flex flex-col md:flex-row justify-around gap-6"
           style={{
             borderTop: "1px solid rgba(255, 255, 255, 0.08)",
-            color: "var(--stone-500, #78716c)",
+            color: "var(--stone-400, #a8a29e)",
           }}
         >
           <span>© {currentYear} Amberprint Studio. All rights reserved.</span>
