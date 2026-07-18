@@ -58,14 +58,14 @@ export function HeroSection() {
                 fontWeight: 400,
               }}
             >
-              Inspired by Fossils and Amber
+              Fossil-Inspired Sculptural Wall Panels
             </h1>
             <p
               className="hero-animate-desc mt-6 text-lg leading-relaxed max-w-xl mx-auto lg:mx-0"
               style={{ color: "var(--text-secondary, #57534e)", lineHeight: 1.7 }}
             >
               Handcrafted bas-relief pieces made with Ultracal plaster and amber resin,
-              designed for hospitality, retail, and architectural interiors.
+              designed in Miami for hospitality, retail, and architectural interiors.
             </p>
             <p
               className="hero-animate-desc mt-4 text-base leading-relaxed max-w-xl mx-auto lg:mx-0"

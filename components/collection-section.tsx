@@ -5,35 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { track } from "@vercel/analytics";
-
-const works = [
-  {
-    title: "Ammonite Relief",
-    description: "Bas-relief wall tile made with Ultracal plaster and amber resin. Designed for modular wall compositions or framed wall art.",
-    image: "/images/snail-floor.png",
-    details: ["Ultracal plaster + amber resin", "Modular or framed format", "Hospitality and residential"],
-  },
-  {
-    title: "Marine Fossil Series",
-    description: "A collection of fossil-inspired reliefs featuring marine organisms, developed as individual panels or repeatable decorative elements.",
-    image: "/images/fossil-relics.png",
-    details: ["Marine fossil relief series", "Repeatable panel system", "Feature walls and retail"],
-  },
-  {
-    title: "Crustacean Study",
-    description: "High-detail sculptural relief exploring fossilized crustacean forms, suitable for vertical wall art applications.",
-    image: "/images/crustaceran.png",
-    orientation: "horizontal",
-    details: ["High-detail sculptural relief", "Horizontal panel format", "Statement wall applications"],
-  },
-  {
-    title: "Prehistoric Fossil Series – Dinosaur Skull",
-    description: "A sculptural wall relief exploring the anatomy and presence of prehistoric fossils.",
-    image: "/images/dino.png",
-    orientation: "horizontal",
-    details: ["Prehistoric fossil study", "Horizontal panel format", "Hospitality and feature installations"],
-  },
-];
+import { works } from "@/lib/works";
 
 export function CollectionSection() {
   const ref = useScrollAnimation({ staggerDelay: 0.2 });
@@ -95,6 +67,7 @@ export function CollectionSection() {
           padding: 1.5rem;
           transform: translateY(100%);
           opacity: 0;
+          overflow-y: auto;
           pointer-events: none;
           transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
           backdrop-filter: blur(12px) saturate(180%);
@@ -139,11 +112,30 @@ export function CollectionSection() {
         .coll-inquire {
           color: white;
           display: inline-flex;
-          margin-top: 1rem;
           font-size: 0.875rem;
           font-weight: 600;
           text-decoration: underline;
           text-underline-offset: 4px;
+        }
+        .coll-actions {
+          align-items: center;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.75rem 1rem;
+          margin-top: 1rem;
+        }
+        .coll-project {
+          align-items: center;
+          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid rgba(255, 255, 255, 0.7);
+          border-radius: 999px;
+          color: var(--stone-900, #1c1917);
+          display: inline-flex;
+          font-size: 0.8125rem;
+          font-weight: 600;
+          justify-content: center;
+          padding: 0.65rem 0.95rem;
+          text-decoration: none;
         }
         .coll-close {
           position: absolute;
@@ -270,7 +262,7 @@ export function CollectionSection() {
                 >
                   <Image
                     src={work.image || "/placeholder.svg"}
-                    alt={work.title}
+                    alt={work.imageAlt}
                     fill
                     className="coll-img"
                     sizes="(max-width: 640px) 100vw, 50vw"
@@ -297,21 +289,39 @@ export function CollectionSection() {
                   <ul className="coll-details">
                     {work.details.map((detail) => <li key={detail}>• {detail}</li>)}
                   </ul>
-                  <Link
-                    href="#contact"
-                    className="coll-inquire"
-                    tabIndex={openWork === work.title ? 0 : -1}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      track("collection_inquiry_click", { piece: work.title });
-                    }}
-                  >
-                    Discuss this piece
-                  </Link>
+                  <div className="coll-actions">
+                    <Link
+                      href={`/collection/${work.slug}`}
+                      className="coll-project"
+                      tabIndex={openWork === work.title ? 0 : -1}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        track("collection_project_click", { piece: work.title });
+                      }}
+                    >
+                      View project
+                    </Link>
+                    <Link
+                      href="#contact"
+                      className="coll-inquire"
+                      tabIndex={openWork === work.title ? 0 : -1}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        track("collection_inquiry_click", { piece: work.title });
+                      }}
+                    >
+                      Discuss this piece
+                    </Link>
+                  </div>
                 </div>
               </div>
             </article>
           ))}
+        </div>
+        <div className="mt-10 text-center">
+          <Link href="/collection" className="btn-secondary">
+            <span>Explore the Full Collection</span>
+          </Link>
         </div>
         <p
           className="mt-10 text-sm leading-relaxed text-center"

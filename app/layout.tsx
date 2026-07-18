@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
   },
 
   description:
-    "Handcrafted sculptural wall panels in resin and plaster, inspired by fossils and natural textures. Designed for high-end interiors and hospitality projects. Made in Miami, Florida.",
+    "Handcrafted fossil-inspired wall panels in plaster and amber resin for hospitality, retail, and luxury interiors. Designed and made in Miami.",
 
   applicationName: "Amberprint Studio",
   category: "Art & Design",
@@ -42,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "Amberprint Studio",
     title: "Luxury Fossil-Inspired Wall Panels | Amberprint Studio Miami",
     description:
-      "Handcrafted sculptural wall panels in resin and plaster, inspired by fossils and natural textures. Designed for high-end interiors and hospitality projects.",
+      "Handcrafted fossil-inspired sculptural wall panels in plaster and amber resin for hospitality, retail, and luxury interiors.",
     locale: "en_US",
     images: [
       {
@@ -56,10 +55,15 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Amberprint Studio",
+    title: "Fossil-Inspired Sculptural Wall Panels | Amberprint Studio",
     description:
-      "Luxury fossil-inspired sculptural wall panels handcrafted in Miami, Florida.",
-    images: ["/opengraph-image"],
+      "Handcrafted wall panels in plaster and amber resin, designed and made in Miami.",
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Amberprint Studio — luxury fossil-inspired sculptural wall panels",
+      },
+    ],
   },
 
   appleWebApp: {
@@ -79,9 +83,17 @@ function jsonLdOrganization() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": `${siteUrl}/#organization`,
     name: "Amberprint Studio",
+    legalName: "Amberprint Studio LLC",
     url: siteUrl,
-    logo: `${siteUrl}/icon.png`,
+    email: "contact@amberprintstudio.com",
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/icon.png`,
+      width: 585,
+      height: 585,
+    },
     sameAs: [
       "https://www.instagram.com/amberprintstudio",
       "https://www.facebook.com/amberprintstudio",
@@ -93,6 +105,15 @@ function jsonLdOrganization() {
       addressRegion: "FL",
       addressCountry: "US",
     },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Miami, Florida",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "project inquiries",
+      email: "contact@amberprintstudio.com",
+    },
   };
 }
 
@@ -100,8 +121,12 @@ function jsonLdWebSite() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": `${siteUrl}/#website`,
     name: "Amberprint Studio",
     url: siteUrl,
+    publisher: {
+      "@id": `${siteUrl}/#organization`,
+    },
   };
 }
 
@@ -111,16 +136,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Script
+        <script
           id="ld-org"
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization()) }}
         />
-        <Script
+        <script
           id="ld-website"
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite()) }}
         />
 
