@@ -96,7 +96,7 @@ function jsonLdOrganization() {
     },
     sameAs: [
       "https://www.instagram.com/amberprintstudio",
-      "https://www.facebook.com/amberprintstudio",
+      "https://www.facebook.com/profile.php?id=61588302980119",
       "https://www.linkedin.com/company/amberprint-studio",
     ],
     address: {
